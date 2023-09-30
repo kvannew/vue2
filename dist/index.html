@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app" style="color: black;background: yellow">
+        {{fullname}} {{fullname}} {{fullname}}
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        console.log(12)
+        const vm = new Vue({
+            data: {
+                msg: '1212',
+                age: 20
+            },
+            // 计算属性，依赖值发生变化才会重写执行用户方法  计算属性要维护一个dirty属性，默认计算属性不会立即执行
+            // 计算属性就是defineProperty
+            // 计算属性也是一个watcher，默认渲染会创造一个渲染watcher
+            computed: {
+                // fullname() {
+                //     return this.msg + this.age
+                // }
+                fullname: {
+                    get() {
+                        return this.msg + this.age
+                    },
+                    set(newVal) {
+                        console.log(newVal)
+                    }
+                }
+            },
+            watch: {
+                // 函数写法
+                // msg(newValue, oldValue) {
+                //     console.log(newValue, oldValue)
+                // }
+
+                // 数组写法
+                msg: [
+                    (newValue, oldValue) => {
+                        console.log(newValue, oldValue)
+                    }
+                ]
+            }
+        })
+        vm.$mount("#app")
+
+        // 底层都是调用$watch
+        vm.$watch("msg", (newValue, oldValue) => {
+            console.log(newValue, oldValue)
+        })
+
+        setTimeout(()=>{
+            vm.msg = '12sdasasad'
+        }, 1000)
+    </script>
+</body>
+</html>
